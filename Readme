@@ -1,0 +1,19 @@
+Muniru Lamin
+Maliak Green
+COSC320 Project 3
+Dr. Joe Anderson
+05/12/19
+
+
+This Program we has to do with graph coloring. with the use of a graph and various of algorithms for coloring n vertices. 
+We implemented the algorithms for coloring a graph G along with our currently running Lab10 graph class. The graph class 
+contain updated methods for coloring the vertices and showing the status of the graph i.e. if two vertices conflict with 
+one another (a conflict being an edge from u to v \in G). This program has a main.cpp where the courses are added and the
+edges are determined based on the time of the courses conflict. This program has more that can be done to it, like making 
+a user menu where they can input their classes, and then run our algorithm to see if any classes coflicts. We didn't have
+time to do it but we paln to continue working on it to see if we can get that working
+
+
+Bonus:
+1. Put program on github
+2. Do documentation on LaTex

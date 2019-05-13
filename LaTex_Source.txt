@@ -1,0 +1,174 @@
+ss{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{fullpage}
+
+\title{COSC-320 Project 3}
+\author{Muniru Lamin \\* Maliak Green}
+\date{May 12 2019}
+
+\begin{document}
+
+\huge{\maketitle{ Map coloring, chromatic number}}
+
+\section{Abstract: }
+\Large For our final project, we have decided to study the application of graph coloring, and how the concept solves real world problems, with the use of a graph and various of algorithms for coloring n vertices. We plan to implement the algorithms for coloring a graph G using standard C++ along with our currently running graph class. The graph class will contain updated methods for coloring the vertices and showing the status of the graph i.e. if two vertices conflict with one another (a conflict being an edge from u to v \in G). 
+
+
+\section{Introduction: }
+Given the various algorithms we have learned in lecture, we wanted to deeper explore 
+the other benefits of graphs in real world problems. Map coloring seemed the most interesting since each color has a significant meaning to the vertices. It is an assignment of labels (traditionally called colors) to elements of a graph subject to certain constraints. Map coloring's origins can be traced back to the 1800s. Back then, mathematicians came up with the principle to help deal with problems related to planar graphs. 
+
+
+
+\section{Topic Details: }
+The goal of our implementation is to show how map coloring can help efficiently adjust the contents of a graph that represent real-world data. By using C++ OOP principles, we were able to model a graph of various data sets. The first data set we modeled our graph after is a university student's course schedule. Below is a graph representing a student's course schedule. each vertex represents a class. Below are the labeling of each vertex in the graph.
+
+
+\begin{enumerate}
+\item COML 1170 10:00 - 10:50 am
+\item COSC 3443 10:20 - 11:15 am
+\item CHEM 2070 11:00 - 12:15 pm
+\item BIOL 1440 12:30 - 1:45 pm
+\item MATH 2331 9:30 - 10:40 am
+\item ENGL 2001 2:00 - 2:50 pm
+\end{enumerate}
+
+
+
+\begin{tikzpicture}
+  [scale=.8,auto=left,every node/.style={circle,fill=blue!20}]
+  \node (n1) at (0,0)  {1};
+  \node (n2) at (0,4)  {2};
+  \node (n3) at (4,4)  {3};
+  \node (n4) at (4,0)  {4};
+  \node (n5) at (8,4)  {5};
+  \node (n6) at (8,0)  {6};
+
+
+    
+ \foreach \from/\to in {n1/n2,n1/n5,n1/n4,n3/n4,n3/n5,n2/n5,n1/n5,}
+\draw (\from) -- (\to);
+
+\end{tikzpicture}
+
+In order to assign a proper coloring to this graph of courses, we must first start at an arbitrary vertex and begin assigning colors. The method we used to assign colors to the graph is a greedy algorithm. The goal is to obtain a chromatic number by finding the minimum amount of colors we need to use. Below is our implementation in order to color a graph G. 
+\begin{algorithm}
+\caption{Greedy-Coloring(G)}
+Create a vector color\\
+make courses base-color: -1
+\begin{algorithmic}
+\FOR{$\&[index, v] : Courses$}
+\item $push$ $-1$ $onto$ $the$ $vector$
+\item\ENDFOR
+\item Make front of vector 0:   first color
+\item $v.front() = 0$
+\item Create a temporary Boolean array to store the available colors with size of vector
+\FOR{$clr = 0$ $to$ $vector$ $size$}
+\item$available  [ clr ] =   false$
+\item \ENDFOR
+\item Assign   colors  to  the rest    of  class
+\item $int$ $temp = 1$
+\FOR{$\& [index, v] : Courses$}
+\item Make adjacent vertices colors unavailable
+\FOR{$int i = 0$ $to$ $Courses[u]$ $size$}
+\IF{$vector[i] \neq -1$}
+\item $available[$vector[i]$] =$ $true$
+\item \ENDIF
+\item \ENDFOR
+\item Find the first available color
+\item $int$ $color$
+\FOR{$color = 0$ $to$ $vector$ $size$}
+\IF{$available[color] ==$ $false$}
+\item $break$
+\item \ENDIF
+\item \ENDFOR
+\item Assign the found color to the next Course
+\item $vector[temp]=$ $color$
+\item $temp++$
+\item Reset the rest of available colors to false for next course iteration
+\FOR{$int i = 0$ $to$ $vector$ $size$}
+\IF{$vector[i] \neq -1$}
+\item $available[$vector[i]$] =$ $false$
+\item \ENDIF
+\item \ENDFOR
+\item\ENDFOR
+\item Print the results of the Algorithm
+\item $int$ $temp$
+\FOR{$\& [index, v] : Courses$}
+\item $print$ $index$ $and$ $vector[temp]$
+\item \ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+\begin{tikzpicture}
+  [scale=.8,auto=left,every node/.style={circle,fill=white!20}]
+  \node (n1) at (0,0)  [fill=red!70,draw,double,rounded corners] {1};
+  \node (n2) at (0,4)  [fill=blue!70,draw,double,rounded corners]{2};
+  \node (n3) at (4,4)  [fill=red!70,draw,double,rounded corners]{3};
+  \node (n4) at (4,0)  [fill=blue!70,draw,double,rounded corners] {4};
+  \node (n5) at (8,4)  [fill=green!70,draw,double,rounded corners] {5};
+  \node (n6) at (8,0)  [fill=red!70,draw,double,rounded corners] {6};
+
+
+    
+  \foreach \from/\to in {n1/n2,n1/n5,n1/n4,n3/n4,n3/n5,n2/n5,n1/n5,}
+    \draw (\from) -- (\to);
+
+\end{tikzpicture}
+
+
+\section{Conclusion: }
+After running the greedy color algorithm, The graph is modified in order to assign a proper scheduling for the student. Starting from node 1, we continue to visit adjacent nodes and give them the least value color. If all are taken, we make a new one. In the real-world application, the system computing this schedule will adjust the time slots so that the courses occur at different times. This sample schedule of a student reflects how programs use algorithms to determine the best fit for each individual. In conclusion,  map coloring is a very effective technique in graph theory that is used to solve not only scheduling problems, but many other issues that different fields face.
+
+
+\section{Bibliography: }
+
+\begin{enumerate}
+\item Graph theory, Part 2. (n. d.). Retrieved from 
+
+$http://web.math.princeton.edu./math_alive/5/Notes2.pdf $\\ 
+
+\item “Scheduling, Map Coloring, and Graph Coloring.”
+
+$Http://www-Cgrl.cs.mcgill.ca,$ 
+
+$www-cgrl.cs.mcgill.ca/~godfried/teaching/dm-reading-assignments/Map-Graph-Coloring.pdf.$
+
+\item Verstraete, Jacques. “Map Coloring Theorms.” 
+
+$www.math.ucsd.edu,$ 
+
+$www.math.ucsd.edu/~jverstra/mathcircle.pdf.$
+
+\item "Sample Schedules." Sample Schedules from Cornell University. 
+
+$https://as.cornell.edu/sample-schedules\&gt;.$
+
+\item Cormen, Thomas H. Introduction to Algorithms. MIT Press, 2009.
+\end{enumerate}
+
+
+\section{Appendix: }
+ Cornell University students sample Data sets: \\ \\
+ Student A: \\ \\
+ANTHR 1182 (FWS): Limits of the Human: Aliens, Apes and Artificial Intelligence, 3 cr. \\  \\ 
+ARAB 1201: Elementary Arabic, 4 cr.\\ \\ 
+ASTRO 1101: From New Worlds to Black Holes (PBS-AS), 3 cr. \\ \\ 
+PHIL 1100: Introduction to Philosophy (HB; KCM-AS), 3 cr. \\ \\ 
+PE 1412: Swedish Massage\\ 
+
+\noindent Student B: \\ \\
+MATH 1120: Calculus II (MQR-AS), 4 cr. \\ \\ 
+SPAN 2090: Intermediate Spanish I, 4 cr. \\ \\ 
+ASTRO 1102: Our Solar System (PBS-AS), 3 cr. \\ \\ 
+GERST 1170 (FWS): Marx, Nietzsche, Freud, 3 cr. \\ \\ 
+PE 1332: Beginning Snowboarding \\ \\ 
+
+\end{document}
+
